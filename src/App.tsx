@@ -5,7 +5,7 @@ export default function App() {
   const [input, setInput] = useState(null)
   const [endpoint, setEndpoint] = useState("books")
 
-  const [page, setPage] = useState("")
+  const [page] = useState("")
   // next page is "?page[number]=2"
 
   const [searchTerm, setSearchTerm] = useState("")
@@ -28,11 +28,11 @@ export default function App() {
   // search
 
   const handleEndpointChange = (e) => {
-    setEndpoint((prev) => e.target.value)
+    setEndpoint(e.target.value)
   }
 
   const handleSearchChange = (e) => {
-    setSearchTerm((prev) => e.target.value)
+    setSearchTerm(e.target.value)
   }
 
   const availableAttributes = () => {
@@ -49,7 +49,7 @@ export default function App() {
   }
 
   const handleAttributeChange = (e) => {
-    setAttribute((prev) => e.target.value)
+    setAttribute(e.target.value)
   }
   // Display
 
