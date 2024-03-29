@@ -1,22 +1,29 @@
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, ChangeEvent } from "react"
 import "./App.css"
 
+interface DataItem {
+  id: string
+  attributes: {
+    [key: string]: string
+  }
+}
+
+interface ApiResponse {
+  data: DataItem[]
+}
+
 export default function App() {
-  const [input, setInput] = useState(null)
-  const [endpoint, setEndpoint] = useState("books")
-
-  const [page] = useState("")
-  // next page is "?page[number]=2"
-
-  const [searchTerm, setSearchTerm] = useState("")
-  const [attribute, setAttribute] = useState("slug")
+  const [input, setInput] = useState<ApiResponse | null>(null)
+  const [endpoint, setEndpoint] = useState<string>("books")
+  const [page] = useState<string>("")
+  const [searchTerm, setSearchTerm] = useState<string>("")
+  const [attribute, setAttribute] = useState<string>("slug")
 
   const fetchData = useCallback(async () => {
     const response = await fetch(
       `https://api.potterdb.com/v1/${endpoint}${page}`
     )
     const result = await response.json()
-    console.log(`https://api.potterdb.com/v1/${endpoint}${page}`)
     setInput(result)
     availableAttributes()
   }, [endpoint, page])
@@ -27,16 +34,18 @@ export default function App() {
 
   // search
 
-  const handleEndpointChange = (e) => {
+  const handleEndpointChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setEndpoint(e.target.value)
   }
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (
+    e
+  ) => {
     setSearchTerm(e.target.value)
   }
 
   const availableAttributes = () => {
-    if (input.data[0].attributes) {
+    if (input!.data[0].attributes) {
       return Object.getOwnPropertyNames(input?.data[0]?.attributes).map(
         (attribute) => (
           <option key={attribute} value={attribute}>
@@ -48,12 +57,12 @@ export default function App() {
     return null
   }
 
-  const handleAttributeChange = (e) => {
+  const handleAttributeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setAttribute(e.target.value)
   }
   // Display
 
-  const renderFormat = (data, nameOrTitle) => {
+  const renderFormat = (data: DataItem, nameOrTitle: string) => {
     return (
       <div key={data.id} style={{ display: "flex", width: "100%" }}>
         <span
