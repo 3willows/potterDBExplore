@@ -5,14 +5,21 @@ export default function App() {
   const [input, setInput] = useState(null)
   const [endpoint, setEndpoint] = useState("books")
 
+  const [page, setPage] = useState("")
+  // next page is "?page[number]=2"
+
   const [searchTerm, setSearchTerm] = useState("")
   const [attribute, setAttribute] = useState("slug")
 
   const fetchData = useCallback(async () => {
-    const response = await fetch(`https://api.potterdb.com/v1/${endpoint}`)
+    const response = await fetch(
+      `https://api.potterdb.com/v1/${endpoint}${page}`
+    )
     const result = await response.json()
+    console.log(`https://api.potterdb.com/v1/${endpoint}${page}`)
     setInput(result)
-  }, [endpoint])
+    availableAttributes()
+  }, [endpoint, page])
 
   useEffect(() => {
     fetchData()
@@ -48,14 +55,17 @@ export default function App() {
 
   const renderFormat = (data, nameOrTitle) => {
     return (
-      <div
-        key={data.id}
-        style={{ display: "flex", justifyContent: "space-around" }}
-      >
-        <span style={{ border: "1px solid black" }}>
+      <div key={data.id} style={{ display: "flex", width: "100%" }}>
+        <span
+          style={{
+            border: "1px solid black",
+            padding: "3px",
+            fontWeight: "bold",
+          }}
+        >
           {data?.attributes?.[nameOrTitle]}
         </span>
-        <span style={{ border: "1px solid black" }}>
+        <span style={{ border: "1px solid black", padding: "3px" }}>
           {attribute === "cover" ||
           attribute === "poster" ||
           attribute === "image" ? (
@@ -95,7 +105,13 @@ export default function App() {
 
   return (
     <>
-      <h3>Explore Potter DB website</h3>
+      <h3>
+        Explore{" "}
+        <a href="https://potterdb.com/" target="_ref">
+          Potter DB
+        </a>
+        (WIP)
+      </h3>
 
       <p className="">
         Endpoint{" "}
@@ -117,8 +133,14 @@ export default function App() {
         </select>
       </p>
 
-      <div className="">
-        <p className="">{renderSearchResults}</p>
+      <div className="">{renderSearchResults}</div>
+
+      <div style={{ textAlign: "left" }}>
+        <p>To do:</p>
+        <p>
+          Make sure I get all the characters, potions and spells, not just the
+          ones closest to the start of the alphabet
+        </p>
       </div>
     </>
   )
