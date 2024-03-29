@@ -56,7 +56,18 @@ export default function App() {
           {data?.attributes?.[nameOrTitle]}
         </span>
         <span style={{ border: "1px solid black" }}>
-          {data?.attributes[attribute]}
+          {attribute === "cover" ||
+          attribute === "poster" ||
+          attribute === "image" ? (
+            <img
+              src={data?.attributes?.[attribute]}
+              alt={data?.attributes?.[nameOrTitle]}
+              width="50"
+              height="60"
+            ></img>
+          ) : (
+            data?.attributes[attribute]
+          )}
         </span>
       </div>
     )
@@ -97,11 +108,10 @@ export default function App() {
         </select>
       </p>
       <p className="">
-        Name search
-        <input onChange={handleSearchChange}></input>
+        Name search <input onChange={handleSearchChange}></input>
       </p>
       <p>
-        Attribute search
+        Attribute search{" "}
         <select onChange={handleAttributeChange}>
           {input?.data[0]?.attributes && availableAttributes()}
         </select>
