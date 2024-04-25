@@ -22,9 +22,13 @@ export default function App() {
   // use Effect
   const fetchData = useCallback(async () => {
     let response
-    if (searchTerm && endpoint == "characters") {
+    if (
+      (searchTerm && endpoint == "characters") ||
+      endpoint === "spells" ||
+      endpoint === "potions"
+    ) {
       response = await fetch(
-        `https://api.potterdb.com/v1/characters?filter[name_cont]=${searchTerm}`
+        `https://api.potterdb.com/v1/${endpoint}?filter[name_cont]=${searchTerm}`
       )
     } else {
       response = await fetch(`https://api.potterdb.com/v1/${endpoint}${page}`)
@@ -151,14 +155,25 @@ export default function App() {
           {input?.data[0]?.attributes && availableAttributes()}
         </select>
       </p>
-
-      <div className="">{renderSearchResults}</div>
+      <div style={{ textAlign: "left" }}>
+        {(endpoint == "characters" ||
+          endpoint === "spells" ||
+          (endpoint === "potions" && !searchTerm)) &&
+          "Only the first entries of characters, spells and potions are shown.  If you have specific queries, enter a search term."}
+      </div>
+      <p></p>
+      <div>{renderSearchResults}</div>
 
       <div style={{ textAlign: "left" }}>
         <p>To do:</p>
+        <p>Refactor and add testing framework</p>
         <p>
-          Make sure I get all the characters, potions and spells, not just the
-          ones closest to the start of the alphabet
+          Make sure search terms are case-insensitive. ("Love potion" should
+          appear when the search term is "love")
+        </p>
+        <p>
+          Add debouncing so that search requests are not fired off character by
+          character.
         </p>
       </div>
     </>
