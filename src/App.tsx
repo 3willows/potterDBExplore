@@ -78,7 +78,11 @@ export default function App() {
     return (
       <div
         key={data.id}
-        style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          textAlign: "left",
+        }}
       >
         <span
           style={{
@@ -131,40 +135,43 @@ export default function App() {
 
   return (
     <>
-      <h3>
-        Explore{" "}
-        <a href="https://potterdb.com/" target="_ref">
-          Potter DB
-        </a>
-        (WIP)
-      </h3>
-
-      <p className="">
-        Endpoint{" "}
-        <select onChange={handleEndpointChange}>
-          <option value="books">books</option>
-          <option value="characters">characters</option>
-          <option value="movies">movies</option>
-          <option value="potions">potions</option>
-          <option value="spells">spells</option>
-        </select>
-      </p>
-      <p className="">
-        Name search <input onChange={handleSearchChange}></input>
-      </p>
-      <p>
-        Attribute search{" "}
-        <select onChange={handleAttributeChange}>
-          {input?.data[0]?.attributes && availableAttributes()}
-        </select>
-      </p>
       <div style={{ textAlign: "left" }}>
-        {(endpoint == "characters" ||
-          endpoint === "spells" ||
-          (endpoint === "potions" && !searchTerm)) &&
-          "Only the first entries of characters, spells and potions are shown.  If you have specific queries, enter a search term."}
+        <h3>
+          Explore{" "}
+          <a href="https://potterdb.com/" target="_ref">
+            Potter DB
+          </a>{" "}
+          (WIP)
+        </h3>
+        <div style={{ display: "grid", gridTemplateColumns: "20% 80%" }}>
+          <span>Endpoint </span>
+          <select onChange={handleEndpointChange}>
+            <option value="books">books</option>
+            <option value="characters">characters</option>
+            <option value="movies">movies</option>
+            <option value="potions">potions</option>
+            <option value="spells">spells</option>
+          </select>
+
+          <span>Search </span>
+          <input onChange={handleSearchChange}></input>
+
+          <span>Attribute </span>
+          <select onChange={handleAttributeChange}>
+            {input?.data[0]?.attributes && availableAttributes()}
+          </select>
+        </div>
+
+        <p></p>
+        <div style={{ textAlign: "left", marginTop:"10px", marginBottom:"10px" }}>
+          {(endpoint == "characters" ||
+            endpoint === "spells" ||
+            (endpoint === "potions" && !searchTerm)) &&
+            "Only the first entries of characters, spells and potions are shown.  If you have specific queries, enter a search term."}
+        </div>
+        <p></p>
+        <div></div>
       </div>
-      <p></p>
       <div>{renderSearchResults}</div>
 
       <div style={{ textAlign: "left" }}>
