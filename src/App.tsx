@@ -132,7 +132,7 @@ export default function App() {
   return (
     <>
       <h3>
-        Explore
+        Explore{" "}
         <a href="https://potterdb.com/" target="_ref">
           Potter DB
         </a>
@@ -169,15 +169,16 @@ export default function App() {
 
       <div style={{ textAlign: "left" }}>
         <p>To do:</p>
-        <p>Refactor and add testing framework</p>
-        <p>
+        <ul></ul>
+        <li>Refactor and add testing framework</li>
+        <li>
           Make sure search terms are case-insensitive. ("Love potion" should
           appear when the search term is "love")
-        </p>
-        <p>
+        </li>
+        <li>
           Add debouncing so that search requests are not fired off character by
           character.
-        </p>
+        </li>
       </div>
     </>
   )
