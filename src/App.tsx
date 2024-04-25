@@ -76,7 +76,10 @@ export default function App() {
 
   const renderFormat = (data: DataItem, nameOrTitle: string) => {
     return (
-      <div key={data.id} style={{ display: "flex", width: "100%" }}>
+      <div
+        key={data.id}
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr" }}
+      >
         <span
           style={{
             border: "1px solid black",
