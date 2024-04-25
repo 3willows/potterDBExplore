@@ -19,20 +19,27 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState<string>("")
   const [attribute, setAttribute] = useState<string>("slug")
 
+  // use Effect
   const fetchData = useCallback(async () => {
-    const response = await fetch(
-      `https://api.potterdb.com/v1/${endpoint}${page}`
-    )
+    let response
+    if (searchTerm && endpoint == "characters") {
+      response = await fetch(
+        `https://api.potterdb.com/v1/characters?filter[name_cont]=${searchTerm}`
+      )
+    } else {
+      response = await fetch(`https://api.potterdb.com/v1/${endpoint}${page}`)
+    }
+
     const result = await response.json()
     setInput(result)
     availableAttributes()
-  }, [endpoint, page])
+  }, [endpoint, page, searchTerm])
 
   useEffect(() => {
     fetchData()
   }, [fetchData, endpoint])
 
-  // search
+  //change parameters
 
   const handleEndpointChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setEndpoint(e.target.value)
@@ -60,6 +67,7 @@ export default function App() {
   const handleAttributeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setAttribute(e.target.value)
   }
+
   // Display
 
   const renderFormat = (data: DataItem, nameOrTitle: string) => {
@@ -92,6 +100,8 @@ export default function App() {
     )
   }
 
+  //search
+
   const renderSearchResults = input?.data?.map((data) => {
     if (endpoint === "books" || endpoint === "movies") {
       return (
@@ -115,7 +125,7 @@ export default function App() {
   return (
     <>
       <h3>
-        Explore{" "}
+        Explore
         <a href="https://potterdb.com/" target="_ref">
           Potter DB
         </a>
